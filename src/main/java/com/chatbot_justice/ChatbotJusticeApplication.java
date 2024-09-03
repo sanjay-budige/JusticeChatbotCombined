@@ -1,4 +1,4 @@
-package com.chatbot_justice.chatbot_justice;
+package com.chatbot_justice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

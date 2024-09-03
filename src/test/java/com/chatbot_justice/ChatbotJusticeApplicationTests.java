@@ -1,4 +1,4 @@
-package com.chatbot_justice.chatbot_justice;
+package com.chatbot_justice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
