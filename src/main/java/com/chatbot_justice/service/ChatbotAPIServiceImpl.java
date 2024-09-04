@@ -1,6 +1,7 @@
 package com.chatbot_justice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.chatbot_justice.dailogflow.Chatbot;
+import com.chatbot_justice.dailogflow.DialogflowResponse;
 import com.google.gson.Gson;
 
 @Service
@@ -23,54 +26,61 @@ public class ChatbotAPIServiceImpl implements ChatbotAPIService {
 
 	String token_url = "https://oauth2.googleapis.com/token";
 
+	@Value("${chatbot.refresh_token}")
+	private String refreshToken;
+
 	@Override
-	public String callNLPChatbotEngine(String question) {
+	public DialogflowResponse callNLPChatbotEngine(Chatbot chatbot) {
 
-//		Text text = new Text();
-//		text.setLanguageCode("en");
-//		text.setText(question); // SET Question
-//		QueryInput queryInput = new QueryInput();
-//		queryInput.setText(text);
-//		
-//		Gson gson = new Gson();
-//		String json = gson.toJson(queryInput);
-//		System.out.println(json);
+		Text text = new Text();
+		text.setLanguageCode("en");
+		text.setText(chatbot.getQuestion()); // SET Question
+		QueryInput queryInput = new QueryInput();
+		queryInput.setText(text);
 
-		//Get token from Google auth token service
-		DailoagFlowToken token = generateAccessToken();
+		Query query = new Query();
+		query.setQueryInput(queryInput);
 		
+		Gson gson = new Gson();
+		String json = gson.toJson(query);
+		System.out.println(json);
+
+		// Get token from Google auth token service
+		DailoagFlowToken token = generateAccessToken();
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.add("Authorization", token.getToken_type() + " " + token.getAccess_token());
 
 		// Create the HttpEntity with the body and headers
-		HttpEntity<String> request = new HttpEntity<>(question, headers);
+		HttpEntity<String> request = new HttpEntity<>(json, headers);
 
 		// Make the POST request
-		ResponseEntity<String> response = restTemplate.exchange(nlp_url, HttpMethod.POST, request, String.class);
+		ResponseEntity<DialogflowResponse> response = restTemplate.exchange(nlp_url, HttpMethod.POST, request,
+				DialogflowResponse.class);
 
 		// Print the response
 		System.out.println(response.getBody());
 
-		//Return response from Dailogflow for response answer
+		// Return response from Dailogflow for response answer
 		return response.getBody();
 	}
 
 	private DailoagFlowToken generateAccessToken() {
-		
-		//Create request body
+
+		// Create request body
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
 		map.add("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
-		//This value need to updated whenever you get an error - run python code and update here
-		map.add("assertion",
-				"eyJ0eXAiOiAiSldUIiwgImFsZyI6ICJSUzI1NiIsICJraWQiOiAiZjNhMjcxNzk1OTQyNzhkOGUyYWE5OGI0YTRiZWUwMTkzZTNkYmYxZSJ9.eyJpc3MiOiAic2VydmljZS1hY2NvdW50QGRvamNoYXRib3QuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCAic2NvcGUiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vYXV0aC9jbG91ZC1wbGF0Zm9ybSIsICJhdWQiOiAiaHR0cHM6Ly9vYXV0aDIuZ29vZ2xlYXBpcy5jb20vdG9rZW4iLCAiaWF0IjogMTcyNTM5MDI2NywgImV4cCI6IDE3MjUzOTM4Njd9.EY9qfL8rFRy9JZOpo9yLl0mwbE3xh3rKnPz_nyfFapAFgOl3gekck9waOGP4iBsOlDAzsNm_p2sf29h9_-4vrFy5q1ob9N77-c9jqw5k3clSd2DTQmknzyGxHpYb76CcbyJIn3lsQibjewNDYDUw1T-HoYrlhOYF6i-XJIRzgA1j3Hewxu164oXYfpXXfAIcWyaNbnCpxYMjx61gOalapqcJBm9_XUOP0xI5Ri8z3kSE8a0t4q4sreYTv5R3ZiNF-szb8dAv6dmYWjy_GRINCkaUubVVGpTV5Rr6vja0bdTvPqX5DQZxEyOdgFIJiQa5wxttt1CrFE6e2Ry1-IzyYA");
-		//Create headers
+		// This value need to updated whenever you get an error - run python code and
+		// update here
+		map.add("assertion", refreshToken);
+		// Create headers
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-		//Call POST API to get the token by passing token, headers and request body
+		// Call POST API to get the token by passing token, headers and request body
 		ResponseEntity<DailoagFlowToken> response = restTemplate.postForEntity(token_url, request,
 				DailoagFlowToken.class);
 
