@@ -1,48 +1,41 @@
 /* src/App.css */
 .App {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  input {
-    padding: 10px;
-    margin: 10px;
-    width: 300px;
-    font-size: 16px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-  
-  h1 {
-    font-size: 13px;
-  }
-  
-  h2 {
-    margin-top: 20px;
-  }
-  
-  /* src/QuestionAnswer.css */
+  text-align: center;
+  margin-top: 50px;
+}
+
+h1 {
+  font-size: 13px;
+}
+
+h2 {
+  margin-top: 20px;
+}
+
+/* src/QuestionAnswer.css */
 .chatbot-container {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 50%;
+  transform: translateX(-50%);
+  position: fixed;
+  bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 500px;
-  width: 350px;
-  border: 1px solid #ccc;
+  height: calc(100% - 100px);
+  width: 100%;
+  max-width: 900px;
   border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  margin: 50px auto;
-  background-color: #f9f9f9;
 }
 
 .chat-window {
-  flex-grow: 1;
   padding: 15px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-bubble {
@@ -53,45 +46,62 @@
   word-wrap: break-word;
 }
 
+/* src/QuestionAnswer.css */
 .chat-bubble.user {
-  background-color: #0084ff;
+  background-color: rgb(54, 54, 207);
+  font-size: 16px;
+  font-family: monospace;
   color: #fff;
-  align-self: flex-end;
+  width: fit-content;
+  align-self: flex-end; 
 }
 
 .chat-bubble.bot {
+  font-family: monospace;
   background-color: #e4e6eb;
   color: #000;
-  align-self: flex-start;
+  width: fit-content;
+  display: flex;
+  font-size: larger;
+  align-self: flex-start; 
 }
 
+
 .input-container {
+  border-radius: 30px;
+  border: 2px solid black;
   display: flex;
-  padding: 10px;
-  border-top: 1px solid #ccc;
+  align-items: center;
+  padding: 5px;
   background-color: #fff;
 }
 
 .input-container input {
   flex-grow: 1;
-  padding: 10px;
+  padding: 15px;
   border: none;
   border-radius: 20px;
-  margin-right: 10px;
-  font-size: 14px;
+  font-size: 25px;
   outline: none;
+  font-weight: 100;
   background-color: #f1f1f1;
 }
 
 .input-container button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  background-color: #0084ff;
-  color: #fff;
+  margin-left: 5px;
   cursor: pointer;
-  outline: none;
-  font-size: 14px;
+  display: flex;
+  border-radius: 20px;
+  padding: 10px;
+  align-items: center;
+  background-color: rgb(54, 54, 207);
+  color: white;
+  font-size: 35px;
+  height: fit-content;
+  width: fit-content;
+}
+.input-containerbutton:hover {
+  opacity: 0.8;
 }
 
 .input-container button:disabled {

@@ -1,10 +1,11 @@
-// src/QuestionAnswer.js
-import React, { useState } from 'react';
-import axios from 'axios';
-import './App.css';
+import React, { useState } from "react";
+import axios from "axios";
+import { FaArrowCircleUp } from "react-icons/fa";
+import Shadow from "./Images/Home.png";
+import "./App.css";
 
 const QuestionAnswer = () => {
-  const [question, setQuestion] = useState('');
+  const [question, setQuestion] = useState("");
   const [chat, setChat] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,38 +20,48 @@ const QuestionAnswer = () => {
     setError(null);
     try {
       // Add user's question to the chat
-      setChat((prevChat) => [...prevChat, { type: 'user', text: question }]);
+      setChat((prevChat) => [...prevChat, { type: "user", text: question }]);
 
-      const response = await axios.post('http://localhost:8080/justice-chatbot', {
-        question: question,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/justice/justice-chatbot",
+        {
+          question: question,
+        }
+      );
 
       // Add the API's answer to the chat
       setChat((prevChat) => [
         ...prevChat,
-        { type: 'bot', text: response.data.answer },
+        { type: "bot", text: response.data.answer },
       ]);
     } catch (err) {
-      setError('Failed to get the answer. Please try again.');
+      setError("Failed to get the answer. Please try again.");
     } finally {
       setLoading(false);
-      setQuestion('');
+      setQuestion("");
     }
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       fetchAnswer();
     }
   };
 
   return (
-    <div className="chatbot-container">
+    <div
+      className="chatbot-container"
+      style={{
+        backgroundImage: chat.length === 0 ? `url(${Shadow})` : "none",
+      }}
+    >
       <div className="chat-window">
         {chat.map((message, index) => (
           <div
             key={index}
-            className={`chat-bubble ${message.type === 'user' ? 'user' : 'bot'}`}
+            className={`chat-bubble ${
+              message.type === "user" ? "user" : "bot"
+            }`}
           >
             {message.text}
           </div>
@@ -66,7 +77,7 @@ const QuestionAnswer = () => {
           disabled={loading}
         />
         <button onClick={fetchAnswer} disabled={loading || !question}>
-          {loading ? '...' : 'Send'}
+          {loading ? "..." : <FaArrowCircleUp />}
         </button>
       </div>
       {error && <p className="error">{error}</p>}
