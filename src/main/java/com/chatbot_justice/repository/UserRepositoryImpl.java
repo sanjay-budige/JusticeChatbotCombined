@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
 				return ps;
 			}
 		});
-		System.out.println("No. Of records are inserted: " + count);
+		System.out.println("No. Of User records are inserted: " + count);
 
 	}
 

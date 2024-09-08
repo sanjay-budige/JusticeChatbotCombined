@@ -39,7 +39,7 @@ public class ChatHistoryRepositoryImpl implements ChatHistoryRepository {
 				return ps;
 			}
 		});
-		System.out.println("No. Of records are inserted: " + count);
+		System.out.println("Data is inserted for Chat History: " + count);
 	}
 
 }
