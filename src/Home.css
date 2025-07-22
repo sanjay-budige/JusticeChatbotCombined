@@ -1,0 +1,88 @@
+/* Container for the entire home page */
+.home-container {
+  text-align: center;
+  margin-top: 100px;
+  padding: 20px;
+  background: linear-gradient(135deg, #f0f4f8, #dfe7ec);
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Headline styling */
+h1 {
+  font-size: 3em;
+  margin-bottom: 50px;
+  color: #343a40;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #007bff, #6610f2);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Styling the button container */
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+/* Styling for the buttons */
+.button {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 8px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* Adding hover effects */
+.button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 15px 20px rgba(0, 123, 255, 0.4);
+  transform: translateY(-5px);
+}
+
+/* Styling for the button active state */
+.button:active {
+  background-color: #003e7e;
+  box-shadow: 0 5px 10px rgba(0, 123, 255, 0.2);
+  transform: translateY(0);
+}
+
+/* Adding a slight glow effect to buttons */
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.button:hover::before {
+  opacity: 1;
+}
+
+/* Adding subtle animation for a smooth appearance */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.home-container {
+  animation: fadeIn 1.5s ease-in;
+}
